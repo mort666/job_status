@@ -1,8 +1,10 @@
-# JobStatus
+# ActiveJob Status
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/job_status`. To experiment with that code, run `bin/console` for an interactive prompt.
+Provides interface for ActiveJob to allow the passing of status information for running jobs.
 
-TODO: Delete this and the text above, and describe your gem
+This gem uses callbacks implemented within ActiveJob and ActiveSupport::Cache to values to track job status and allow the passing of job completion information.
+
+Cached information is set to expire after 72 hours to prevent memory exhaustion issues.
 
 ## Installation
 
@@ -20,6 +22,17 @@ Or install it yourself as:
 
     $ gem install job_status
 
+## Configuration
+
+JobStatus needs to have a store configured to be used for the cache. Any ActiveSupport::Cache store is acceptable. The simplest to use is `ActiveSupport::Cache::MemoryStore`, to use the store configure an initializer within you application to set the store.
+
+```ruby
+# config/initializers/active_job_status.rb
+JobStatus.store = ActiveSupport::Cache::MemoryStore.new
+```
+
+Other memory stores are available, for example it is possible to use the Redis based store or MemCache based store.
+
 ## Usage
 
 TODO: Write usage instructions here
@@ -33,4 +46,3 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/job_status.
-

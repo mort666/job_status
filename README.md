@@ -35,7 +35,39 @@ Other memory stores are available, for example it is possible to use the Redis b
 
 ## Usage
 
-TODO: Write usage instructions here
+Create ActiveJob worker as normal and add the callback handlers and class methods for reporting status.
+
+```ruby
+class MyJob < ActiveJob::Base
+  include JobStatus::TrackedJob
+
+  queue_as :urgent
+
+  def perform(*args)
+    # Set the total for a percentage
+    total(job_id: @job_id, total: 100)
+
+    # Do Stuff...
+    # Set current status through
+    at(job_id: @job_id, at: 95)
+
+    # Store data to be retrieved
+    store(job_id: @job_id, store: [{test: 1, name: "test"},{test: 2, name: "test 2"}])
+  end
+end
+```
+
+### Job Status
+
+You can check the status of the job using the ActiveJob job_id.
+
+```ruby
+my_job = MyJob.perform_later
+JobStatus::Status.get_status(job_id: my_job.job_id)
+# => :queued, :working, :completed
+```
+
+More information can be found in the docs.
 
 ## Development
 

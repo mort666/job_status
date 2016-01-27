@@ -3,7 +3,7 @@ require "spec_helper"
 describe JobStatus::Tracker do
 
   let!(:store) { JobStatus.store = ActiveSupport::Cache::MemoryStore.new }
-  let(:job) { JobStatus::TrackedJob.new.enqueue }
+  let(:job) { MyJob.new.enqueue }
 
   describe "::enqueue" do
     it "should enqueue a job" do
@@ -21,7 +21,7 @@ describe JobStatus::Tracker do
 
   describe "::at" do
     it "should add an at to job status" do
-      JobStatus::Tracker.at(job_id: job.job_id, at: 5)
+      job.at(job_id: job.job_id, at: 5)
       expect(store.fetch(job.job_id)[:at]).to eq 5
     end
   end

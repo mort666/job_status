@@ -13,23 +13,5 @@ module JobStatus
     def self.remove(job_id:)
       JobStatus.store.delete(job_id)
     end
-
-    def self.at(job_id:, at:)
-      cache = JobStatus.store.fetch(job_id)
-      cache[:at] = at
-      JobStatus.store.write(job_id, cache)
-    end
-
-    def self.total(job_id:, total:)
-      cache = JobStatus.store.fetch(job_id)
-      cache[:total] = total
-      JobStatus.store.write(job_id, cache)
-    end
-
-    def self.store(job_id:, store:)
-      cache = JobStatus.store.fetch(job_id)
-      cache[:store] = store
-      JobStatus.store.write(job_id, cache)
-    end
   end
 end

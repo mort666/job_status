@@ -7,11 +7,11 @@ require 'job_status/status'
 require "job_status/version"
 
 #
-# ActiveJob Status Module Namespace
+# ActiveJob Status Module Top Level Namespace
 #
 module JobStatus
   #
-  # Adds the storage for the Cache 
+  # Adds the storage for the Cache
   #
   # @attr store storage for the ActiveSupport::Cache cache handler
   #   Options include ActiveSupport::Cache::MemoryStore

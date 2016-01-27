@@ -1,4 +1,7 @@
 require 'bundler'
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
+
 require 'job_status'
 
 include ActiveJob::TestHelper

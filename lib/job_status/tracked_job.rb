@@ -27,9 +27,7 @@ module JobStatus
     # @param at [Integer] Value to store for the current position
     #
     def at(job_id:, at:)
-      cache = JobStatus.store.fetch(job_id)
-      cache[:at] = at
-      JobStatus.store.write(job_id, cache)
+      storage(job_id, :at, at)
     end
 
     #
@@ -39,9 +37,7 @@ module JobStatus
     # @param total [Integer] Value to store for the total positions
     #
     def total(job_id:, total:)
-      cache = JobStatus.store.fetch(job_id)
-      cache[:total] = total
-      JobStatus.store.write(job_id, cache)
+      storage(job_id, :total, total)
     end
 
     #
@@ -51,8 +47,16 @@ module JobStatus
     # @param store [Object] Data to be save within the storage, can be any serializable object
     #
     def store(job_id:, store:)
+      storage(job_id, :store, store)
+    end
+
+    private
+    #
+    # Interact with the storage to make the save while preserving previous contents
+    #
+    def storage(job_id, type, value)
       cache = JobStatus.store.fetch(job_id)
-      cache[:store] = store
+      cache[type] = value
       JobStatus.store.write(job_id, cache)
     end
 

@@ -77,4 +77,8 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/job_status.
+Bug reports and pull requests are welcome on GitHub at https://github.com/mort666/job_status.
+
+## Copyright
+
+Copyright (c) 2016 Stephen Kapp. See LICENSE for details.

@@ -18,6 +18,7 @@ module JobStatus
     # @param job_id [String] ActiveJob ID to use as the key in storage
     #
     def self.update(job_id:, status:)
+      Rails.logger.info("Job ID: #{job_id}")
       cache = JobStatus.store.fetch(job_id)
       cache[:status] = status
       JobStatus.store.write(job_id, cache)

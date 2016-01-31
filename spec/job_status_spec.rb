@@ -7,7 +7,7 @@ describe JobStatus::Status do
       let(:job) { MyJob.new.enqueue }
 
       it "should return :queued" do
-        expect(JobStatus::Status.get_status(job_id: job.job_id)).to eq :queued
+        expect(JobStatus::Status.get_status(job.job_id)).to eq :queued
       end
     end
 
@@ -16,7 +16,7 @@ describe JobStatus::Status do
 
       it "should return :completed" do
         perform_enqueued_jobs { job }
-          expect(JobStatus::Status.get_status(job_id: job.job_id)).to eq :completed
+          expect(JobStatus::Status.get_status(job.job_id)).to eq :completed
       end
     end
 
@@ -25,7 +25,7 @@ describe JobStatus::Status do
 
       it "should return :completed" do
         perform_enqueued_jobs { job }
-        expect(JobStatus::Status.get_all(job_id: job.job_id)[:total]).to eq 100
+        expect(JobStatus::Status.get_all(job.job_id)[:total]).to eq 100
       end
     end
 
@@ -34,16 +34,25 @@ describe JobStatus::Status do
 
       it "should return Hash" do
         perform_enqueued_jobs { job }
-        expect(JobStatus::Status.store(job_id: job.job_id)).to include({:test=>1, :name=>"test"})
+        expect(JobStatus::Status.store(job.job_id)).to include({:test=>1, :name=>"test"})
       end
     end
 
     describe "::at" do
       let(:job) { MyJob.perform_later(job: 4) }
 
-      it "should return :completed" do
+      it "should return :at" do
         perform_enqueued_jobs { job }
-        expect(JobStatus::Status.at(job_id: job.job_id)).to eq 95
+        expect(JobStatus::Status.at(job.job_id)).to eq 95
+      end
+    end
+
+    describe "::percentage" do
+      let(:job) { MyJob.perform_later(job: 4) }
+
+      it "should return :percentage" do
+        perform_enqueued_jobs { job }
+        expect(JobStatus::Status.percentage(job.job_id)).to eq 95
       end
     end
 
@@ -52,7 +61,7 @@ describe JobStatus::Status do
 
       it "should return :100" do
         perform_enqueued_jobs { job }
-        expect(JobStatus::Status.total(job_id: job.job_id)).to eq 100
+        expect(JobStatus::Status.total(job.job_id)).to eq 100
       end
     end
   end

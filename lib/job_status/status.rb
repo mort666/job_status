@@ -10,7 +10,7 @@ module JobStatus
     # @return [Symbol] status Returns status possible valuds
     #   :queued, :working, :completed
     #
-    def self.get_status(job_id:)
+    def self.get_status(job_id)
       status = JobStatus.store.fetch(job_id)
       status ? status[:status] : nil
     end
@@ -21,7 +21,7 @@ module JobStatus
     # @param job_id [String] ActiveJob ID to query the store for
     # @return [Integer] at Value stored by the work for the progress
     #
-    def self.at(job_id:)
+    def self.at(job_id)
       status = JobStatus.store.fetch(job_id)
       status ? status[:at] : nil
     end
@@ -32,7 +32,7 @@ module JobStatus
     # @param job_id [String] ActiveJob ID to query the store for
     # @return returns the stored data, could be any serializable object
     #
-    def self.store(job_id:)
+    def self.store(job_id)
       status = JobStatus.store.fetch(job_id)
       status ? status[:store] : nil
     end
@@ -43,9 +43,19 @@ module JobStatus
     # @param job_id [String] ActiveJob ID to query the store for
     # @return [Integer] total Returns total used for the percentage
     #
-    def self.total(job_id:)
+    def self.total(job_id)
       status = JobStatus.store.fetch(job_id)
       status ? status[:total] : nil
+    end
+
+    def self.percentage(job_id)
+      status = JobStatus.store.fetch(job_id)
+      percent = nil
+      puts status
+      if status
+        percent = 100.0 / (status[:total].to_f / status[:at])
+      end
+      return percent
     end
 
     #
@@ -54,7 +64,7 @@ module JobStatus
     # @param job_id [String] ActiveJob ID to query the store for
     # @return returns all information held in the store for the job_id
     #
-    def self.get_all(job_id:)
+    def self.get_all(job_id)
       status = JobStatus.store.fetch(job_id)
       status ? status : nil
     end

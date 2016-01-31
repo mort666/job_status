@@ -8,7 +8,7 @@ module JobStatus
     #
     # @param job_id [String] ActiveJob ID to use as the key in storage
     #
-    def self.enqueue(job_id:)
+    def self.enqueue(job_id)
       JobStatus.store.write(job_id, {status: :queued, at: 0, total: 100}, expires_in: 259200)
     end
 
@@ -17,8 +17,7 @@ module JobStatus
     #
     # @param job_id [String] ActiveJob ID to use as the key in storage
     #
-    def self.update(job_id:, status:)
-      Rails.logger.info("Job ID: #{job_id}")
+    def self.update(job_id, status)
       cache = JobStatus.store.fetch(job_id)
       cache[:status] = status
       JobStatus.store.write(job_id, cache)
@@ -29,7 +28,7 @@ module JobStatus
     #
     # @param job_id [String] ActiveJob ID to use as the key in storage
     #
-    def self.remove(job_id:)
+    def self.remove(job_id)
       JobStatus.store.delete(job_id)
     end
   end
